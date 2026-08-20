@@ -1,0 +1,88 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { PrivateRoute } from './components/PrivateRoute';
+import { Layout } from './components/Layout';
+import { Login } from './pages/Login';
+import { Dashboard } from './pages/Dashboard';
+import { Products } from './pages/Products';
+import { Orders } from './pages/Orders';
+import { Campaigns } from './pages/Campaigns';
+import { CloverSetup } from './pages/CloverSetup';
+import Users from './pages/Users';
+import './styles/App.css';
+
+function App() {
+  return (
+    <Router>
+      <AuthProvider>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <Dashboard />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/products"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <Products />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <Orders />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/campaigns"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <Campaigns />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/clover"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <CloverSetup />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <Users />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </AuthProvider>
+    </Router>
+  );
+}
+
+export default App;

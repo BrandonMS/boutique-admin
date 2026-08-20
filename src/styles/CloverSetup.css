@@ -1,0 +1,59 @@
+.clover-setup {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.clover-setup h1 {
+  color: #2c3e50;
+  margin-bottom: 2rem;
+}
+
+.setup-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.step {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.step h3 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.step ol {
+  margin-left: 1.5rem;
+  color: #34495e;
+}
+
+.step li {
+  margin-bottom: 0.5rem;
+}
+
+.step a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.step a:hover {
+  text-decoration: underline;
+}
+
+.step pre {
+  background-color: #ecf0f1;
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.step p {
+  color: #34495e;
+  margin-bottom: 0.5rem;
+}
