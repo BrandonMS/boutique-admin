@@ -43,11 +43,7 @@ export const Products = () => {
   const handleSyncFromClover = async () => {
     setSyncStatus('Syncing...');
     try {
-      const merchantId = prompt('Enter Clover Merchant ID:');
-      const accessToken = prompt('Enter Clover Access Token:');
-      if (!merchantId || !accessToken) return;
-
-      const response = await productService.syncFromClover(merchantId, accessToken);
+      const response = await productService.syncFromClover();
       setSyncStatus(`Synced ${response.data.count} products`);
       loadProducts();
     } catch (err) {

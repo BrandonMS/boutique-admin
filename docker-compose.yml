@@ -32,6 +32,8 @@ services:
       context: ../boutique-backend
       dockerfile: Dockerfile
     container_name: boutique-backend
+    env_file:
+      - ../boutique-backend/.env
     environment:
       NODE_ENV: development
       DB_USER: postgres
@@ -63,6 +65,16 @@ services:
       REACT_APP_API_URL: http://localhost:3000/api
     ports:
       - "3001:3001"
+    depends_on:
+      - backend
+
+  web:
+    build:
+      context: ../boutique-web
+      dockerfile: Dockerfile
+    container_name: boutique-web
+    ports:
+      - "80:80"
     depends_on:
       - backend
 

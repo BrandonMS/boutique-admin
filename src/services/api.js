@@ -39,8 +39,7 @@ export const productService = {
   getProducts: (category = null) =>
     apiClient.get('/products', { params: { category } }),
   getProductById: (id) => apiClient.get(`/products/${id}`),
-  syncFromClover: (merchantId, accessToken) =>
-    apiClient.post('/products/sync', { merchantId, accessToken }),
+  syncFromClover: () => apiClient.post('/products/sync'),
   createProduct: (product) => apiClient.post('/products', product),
   updateProduct: (id, product) => apiClient.put(`/products/${id}`, product),
   deleteProduct: (id) => apiClient.delete(`/products/${id}`),
@@ -56,8 +55,8 @@ export const orderService = {
       accessToken,
     }),
   getOrders: () => apiClient.get('/orders'),
-  updateOrderStatus: (orderId, status) =>
-    apiClient.patch(`/orders/${orderId}/status`, { status }),
+  updateOrderStatus: (orderId, status, trackingUrl) =>
+    apiClient.patch(`/orders/${orderId}/status`, { status, trackingUrl }),
 };
 
 // Campaigns

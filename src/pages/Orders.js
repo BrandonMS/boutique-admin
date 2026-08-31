@@ -25,8 +25,14 @@ export const Orders = () => {
   };
 
   const handleStatusUpdate = async (orderId, newStatus) => {
+    let trackingUrl;
+    if (newStatus === 'shipped') {
+      trackingUrl = window.prompt('Enter the shipment tracking URL:');
+      if (!trackingUrl) return;
+    }
+
     try {
-      await orderService.updateOrderStatus(orderId, newStatus);
+      await orderService.updateOrderStatus(orderId, newStatus, trackingUrl);
       loadOrders();
     } catch (err) {
       setError('Failed to update order status');
@@ -49,6 +55,7 @@ export const Orders = () => {
                 <th>Order ID</th>
                 <th>Total</th>
                 <th>Status</th>
+                <th>Tracking</th>
                 <th>Created</th>
                 <th>Actions</th>
               </tr>
@@ -68,6 +75,13 @@ export const Orders = () => {
                       <option value="shipped">Shipped</option>
                       <option value="cancelled">Cancelled</option>
                     </select>
+                  </td>
+                  <td>
+                    {order.tracking_url && (
+                      <a href={order.tracking_url} target="_blank" rel="noreferrer">
+                        Tracking Number
+                      </a>
+                    )}
                   </td>
                   <td>{new Date(order.created_at).toLocaleDateString()}</td>
                   <td>
