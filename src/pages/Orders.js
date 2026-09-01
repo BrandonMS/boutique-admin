@@ -24,15 +24,15 @@ export const Orders = () => {
     }
   };
 
-  const handleStatusUpdate = async (orderId, newStatus) => {
+  const handleStatusUpdate = async (order, newStatus) => {
     let trackingUrl;
     if (newStatus === 'shipped') {
-      trackingUrl = window.prompt('Enter the shipment tracking URL:');
+      trackingUrl = window.prompt('Enter the shipment tracking URL:', order.tracking_url || '');
       if (!trackingUrl) return;
     }
 
     try {
-      await orderService.updateOrderStatus(orderId, newStatus, trackingUrl);
+      await orderService.updateOrderStatus(order.id, newStatus, trackingUrl);
       loadOrders();
     } catch (err) {
       setError('Failed to update order status');
@@ -68,7 +68,7 @@ export const Orders = () => {
                   <td>
                     <select
                       value={order.status}
-                      onChange={(e) => handleStatusUpdate(order.id, e.target.value)}
+                      onChange={(e) => handleStatusUpdate(order, e.target.value)}
                     >
                       <option value="pending">Pending</option>
                       <option value="completed">Completed</option>
