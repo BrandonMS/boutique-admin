@@ -6,6 +6,11 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [showPasswordReset, setShowPasswordReset] = useState(false);
+  const [resetUserId, setResetUserId] = useState(null);
+  const [resetUserEmail, setResetUserEmail] = useState('');
+  const [resetPassword, setResetPassword] = useState('');
+  const [resetConfirmPassword, setResetConfirmPassword] = useState('');
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({
     email: '',
@@ -115,6 +120,50 @@ const Users = () => {
     setSuccess('');
   };
 
+  const handleResetPassword = (user) => {
+    setResetUserId(user.id);
+    setResetUserEmail(user.email);
+    setResetPassword('');
+    setResetConfirmPassword('');
+    setShowPasswordReset(true);
+    setError('');
+    setSuccess('');
+  };
+
+  const handleResetPasswordSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+
+    if (!resetPassword) {
+      setError('New password is required');
+      return;
+    }
+
+    if (resetPassword.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+
+    if (resetPassword !== resetConfirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    try {
+      await userService.resetUserPassword(resetUserId, resetPassword);
+      setSuccess(`Password for ${resetUserEmail} reset successfully`);
+      setShowPasswordReset(false);
+      setResetPassword('');
+      setResetConfirmPassword('');
+      setResetUserId(null);
+      setResetUserEmail('');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to reset password');
+      console.error('Error:', err);
+    }
+  };
+
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this user? This cannot be undone.')) {
       setError('');
@@ -146,6 +195,16 @@ const Users = () => {
     setSuccess('');
   };
 
+  const handleCancelReset = () => {
+    setShowPasswordReset(false);
+    setResetPassword('');
+    setResetConfirmPassword('');
+    setResetUserId(null);
+    setResetUserEmail('');
+    setError('');
+    setSuccess('');
+  };
+
   return (
     <div className="users-container">
       <h1>User Management</h1>
@@ -153,7 +212,7 @@ const Users = () => {
       {error && <div className="alert alert-error">{error}</div>}
       {success && <div className="alert alert-success">{success}</div>}
 
-      {!showForm && (
+      {!showForm && !showPasswordReset && (
         <button className="btn btn-primary" onClick={() => setShowForm(true)}>
           + Add New User
         </button>
@@ -250,6 +309,45 @@ const Users = () => {
         </div>
       )}
 
+      {showPasswordReset && (
+        <div className="form-card password-reset-form">
+          <h2>Reset User Password</h2>
+          <p className="user-info">Email: <strong>{resetUserEmail}</strong></p>
+          <form onSubmit={handleResetPasswordSubmit}>
+            <div className="form-group">
+              <label>New Password *</label>
+              <input
+                type="password"
+                value={resetPassword}
+                onChange={(e) => setResetPassword(e.target.value)}
+                placeholder="Enter new password (min 6 characters)"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Confirm Password *</label>
+              <input
+                type="password"
+                value={resetConfirmPassword}
+                onChange={(e) => setResetConfirmPassword(e.target.value)}
+                placeholder="Confirm new password"
+                required
+              />
+            </div>
+
+            <div className="form-actions">
+              <button type="submit" className="btn btn-warning">
+                Reset Password
+              </button>
+              <button type="button" className="btn btn-secondary" onClick={handleCancelReset}>
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
       <div className="users-table-container">
         {loading ? (
           <p>Loading users...</p>
@@ -289,6 +387,13 @@ const Users = () => {
                       onClick={() => handleEdit(user)}
                     >
                       Edit
+                    </button>
+                    <button
+                      className="btn btn-sm btn-warning"
+                      onClick={() => handleResetPassword(user)}
+                      title="Reset user password"
+                    >
+                      Reset Password
                     </button>
                     <button
                       className="btn btn-sm btn-danger"

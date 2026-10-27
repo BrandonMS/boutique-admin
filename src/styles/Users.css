@@ -57,6 +57,15 @@
   background-color: #2980b9;
 }
 
+.btn-warning {
+  background-color: #f39c12;
+  color: white;
+}
+
+.btn-warning:hover {
+  background-color: #d68910;
+}
+
 .btn-danger {
   background-color: #e74c3c;
   color: white;
@@ -103,6 +112,19 @@
   font-size: 18px;
   margin-bottom: 20px;
   color: #2c3e50;
+}
+
+.password-reset-form .user-info {
+  background-color: #ecf0f1;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #34495e;
+}
+
+.password-reset-form .user-info strong {
+  color: #1b1b1b;
 }
 
 .form-group {

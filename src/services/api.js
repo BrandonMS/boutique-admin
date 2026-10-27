@@ -76,6 +76,8 @@ export const userService = {
     apiClient.post('/users', { email, password, firstName, lastName, phoneNumber, address, role }),
   updateUser: (id, firstName, lastName, phoneNumber, address, role, emailVerified) =>
     apiClient.put(`/users/${id}`, { firstName, lastName, phoneNumber, address, role, emailVerified }),
+  resetUserPassword: (id, newPassword) =>
+    apiClient.post(`/users/${id}/reset-password`, { newPassword }),
   deleteUser: (id) => apiClient.delete(`/users/${id}`),
 };
 
